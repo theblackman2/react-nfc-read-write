@@ -6,20 +6,20 @@ const NFCReaderWriter = () => {
   const [nfcValue, setNfcValue] = useState(""); // Scanned NFC value
 
   // Write to NFC tag
-  const writeToNFC = async () => {
-    if ("NDEFReader" in window) {
-      try {
-        const ndef = new (window.NDEFReader as any)();
-        await ndef.write(inputValue); // Write input value to NFC
-        alert("Successfully written to NFC tag!");
-      } catch (error) {
-        console.error("Error writing to NFC:", error);
-        alert("Failed to write to NFC. Please try again.");
-      }
-    } else {
-      alert("Web NFC is not supported in this browser.");
-    }
-  };
+  // const writeToNFC = async () => {
+  //   if ("NDEFReader" in window) {
+  //     try {
+  //       const ndef = new (window.NDEFReader as any)();
+  //       await ndef.write(inputValue); // Write input value to NFC
+  //       alert("Successfully written to NFC tag!");
+  //     } catch (error) {
+  //       console.error("Error writing to NFC:", error);
+  //       alert("Failed to write to NFC. Please try again.");
+  //     }
+  //   } else {
+  //     alert("Web NFC is not supported in this browser.");
+  //   }
+  // };
 
   // Read from NFC tag
   const readFromNFC = async () => {
@@ -77,7 +77,7 @@ const NFCReaderWriter = () => {
           placeholder="Enter value to write"
         />
       </div>
-      <button onClick={writeToNFC}>Write</button>
+      {/* <button onClick={writeToNFC}>Write</button> */}
     </main>
   );
 };
