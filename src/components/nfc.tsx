@@ -4,33 +4,51 @@ import { useState, useEffect, useCallback } from "react";
 const NFCReaderWriter = () => {
   const [inputValue, setInputValue] = useState("");
   const [nfcValue, setNfcValue] = useState("");
-  
-  const scan = useCallback(async () => {
-      if ("NDEFReader" in window) {
-        try {
-          const ndef = new (window.NDEFReader as any)();
-          await ndef.scan();
-          alert("Scan started. Approach an NFC tag.");
-  
-          ndef.onreading = (event: any) => {
-            const decoder = new TextDecoder();
-            for (const record of event.message.records) {
-              const text = decoder.decode(record.data); // Decode text
-              setNfcValue(text); // Update NFC value state
-            }
-          };
-  
-          ndef.onreadingerror = () => {
-            console.error("Error reading NFC tag.");
-            alert("Error reading NFC. Try again.");
-          };
-        } catch (error) {
-          console.error("Error starting NFC scan:", error);
-          alert("Failed to start NFC scan.");
-        }
-      } else {
-        alert("Web NFC is not supported in this browser.");
+
+
+  const onReading = ({ message }: { message: any, serialNumber: any }) => {
+    console.log(message)
+    for (const record of message.records) {
+      console.log(record)
+      switch (record.recordType) {
+        case "text":
+          {
+            const textDecoder = new TextDecoder(record.encoding);
+            setNfcValue(textDecoder.decode(record.data));
+            break;
+          }
+        case "url":
+          // TODO: Read URL record with record data.
+          break;
+        default:
+        // TODO: Handle other records with record data.
       }
+    }
+  };
+
+  const scan = useCallback(async () => {
+    if ('NDEFReader' in window) {
+      try {
+        const ndef = new (window.NDEFReader as any)();
+        await ndef.scan();
+
+        alert("Scan started successfully.");
+        ndef.onreadingerror = () => {
+          console.log("Cannot read data from the NFC tag. Try another one?");
+        };
+
+        ndef.onreading = (event: any) => {
+          console.log("NDEF message read.");
+          onReading(event);
+        };
+
+      } catch (error) {
+        alert(`Error! Scan failed to start: ${error}.`);
+      };
+    }
+    else {
+      alert('NDEFReader feature not availlable')
+    }
   }, [])
 
   // Write to NFC tag
