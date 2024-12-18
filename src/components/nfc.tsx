@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 
 const NFCReaderWriter = () => {
@@ -9,7 +8,7 @@ const NFCReaderWriter = () => {
   const writeToNFC = async () => {
     if ("NDEFReader" in window) {
       try {
-        const ndef = new (window.NDEFReader as any)();
+        const ndef = new NDEFReader();
         await ndef.write(inputValue); // Write input value to NFC
         alert("Successfully written to NFC tag!");
       } catch (error) {
@@ -25,11 +24,11 @@ const NFCReaderWriter = () => {
   const readFromNFC = async () => {
     if ("NDEFReader" in window) {
       try {
-        const ndef = new new (window.NDEFReader as any)();
+        const ndef = new NDEFReader();
         await ndef.scan();
         alert("Scan started. Approach an NFC tag.");
 
-        ndef.onreading = (event: any) => {
+        ndef.onreading = (event) => {
           const decoder = new TextDecoder();
           for (const record of event.message.records) {
             const text = decoder.decode(record.data); // Decode text
