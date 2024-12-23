@@ -24,11 +24,14 @@ const Writer: React.FC = () => {
 
   return (
     <div className='w-full flex flex-col gap-4'>
+      <p>
+        Approach the NFC tag you want to write to and enter the data below.
+      </p>
       <input
         type="text"
         value={message}
         onChange={handleInputChange}
-        placeholder="Enter message to write"
+        placeholder="Enter data to write"
         className='p-2 rounded-md'
       />
       <button
