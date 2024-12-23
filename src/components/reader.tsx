@@ -9,7 +9,6 @@ const NFCReader: React.FC = () => {
       try {
         const ndef = new NDEFReader();
         await ndef.scan();
-        alert("Scan started. Approach an NFC tag.");
 
         ndef.onreading = (event) => {
           const decoder = new TextDecoder();
